@@ -1,0 +1,13 @@
+{
+  "displayName": "John Doe",
+  "firstName": "John",
+  "lastName": "Doe",
+  "emails": [],
+  "gender": "male",
+  "authDisplayName": "John Doe",
+  "authProvider": "google",
+  "authId": "123456789012345678901",
+  "authProfileUrl": "https://plus.google.com/+JohnDoe",
+  "iat": 1456912683,
+  "exp": 1456912693
+}

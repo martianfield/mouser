@@ -1,0 +1,13 @@
+{
+  "displayName": "John Doe",
+  "firstName": "John",
+  "lastName": "Doe",
+  "emails": [ { "value": "john@doe.com" } ],
+  "gender": "male",
+  "authDisplayName": "John Doe",
+  "authProvider": "facebook",
+  "authId": "12345678901234567",
+  "authProfileUrl": "https://www.facebook.com/app_scoped_user_id/12345678901234567/",
+  "iat": 1456910119,
+  "exp": 1456910129
+}
