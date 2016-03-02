@@ -1,0 +1,27 @@
+{
+  "name": "mouser",
+  "version": "0.1.0",
+  "description": "Mongo Based User Management",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martianfield/mouser.git"
+  },
+  "author": "Martin Imfeld <martin.imfeld@gmail.com> (http://martianfield.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/martianfield/mouser/issues"
+  },
+  "homepage": "https://github.com/martianfield/mouser#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "express": "^4.13.4",
+    "mongodb": "^2.1.7"
+  }
+}
