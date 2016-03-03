@@ -38,4 +38,8 @@ node_modules
 # OSX
 .DS_Store
 
+# sensitive information
+example/config.js
+
+
 
