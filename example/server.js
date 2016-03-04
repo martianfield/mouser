@@ -1,5 +1,8 @@
+'use strict'
+
 const config = require(__dirname + '/config.js')
 const mouser = require(__dirname + '/../index.js')
+const MongoClient = require('mongodb').MongoClient
 
 // configuration
 /*
@@ -11,3 +14,17 @@ mouser.set('mongo', { uri: config.mongo.uri, userCollection: config.mongo.userCo
 mouser.settings = config
 
 console.log(mouser.settings)
+
+
+// connect to database
+MongoClient.connect(config.mongo.uri)
+  .then(db => {
+    console.log("connected to database")
+    // initialize database
+    mouser.use("db", db)
+  })
+  .catch(err => {
+    console.log("error:", err)
+  })
+
+

@@ -1,3 +1,5 @@
+'use strict'
+
 const settings = {
   facebook: {
     id: null,
