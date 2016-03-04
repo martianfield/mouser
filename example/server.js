@@ -12,19 +12,18 @@ mouser.use('collection', 'customers')
 // connect to database
 MongoClient.connect(config.mongo.uri)
   .then(db => {
-    stuff.db = db // we safe-keep the db so we can cleanup later
+    stuff.db = db // we safe-keep the db so we can cleanup() later
     console.log("connected to database")
     // initialize database
     mouser.use("db", db)
-
-    // just for testing purposes ... you should not close the db here
-    //db.close()
   })
   .catch(err => {
     console.log("error:", err)
   })
 
 mouser.info()
+
+
 
 
 process.on('SIGINT', cleanup)

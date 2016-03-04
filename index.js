@@ -4,7 +4,7 @@ const use = require(__dirname + '/src/use.js')
 const UserDA = require(__dirname + '/src/user-da.js')
 
 module.exports.use = use.use
-
+module.exports.users = UserDA.O
 
 module.exports.info = () => {
   console.log("Mouser Info")
