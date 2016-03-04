@@ -46,4 +46,5 @@ function UserDAO() {
 
 }
 
-module.exports.O = new UserDAO()
+const O = new UserDAO()
+module.exports.O = O
