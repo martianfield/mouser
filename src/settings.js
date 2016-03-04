@@ -14,7 +14,6 @@ const settings = {
     expiresIn: 0
   },
   mongo: {
-    uri: null,
     userCollection: null
   }
 }
@@ -34,8 +33,8 @@ const set = (target, options) => {
       settings.token.secret = options.secret
       settings.token.expiresIn = options.expiresIn
       break
-    case 'mongo':
-      settings.mongo.uri = options.uri
+    case 'collection':
+      settings.mongo.userCollection = collection
       break
   }
 }

@@ -4,27 +4,35 @@ const config = require(__dirname + '/config.js')
 const mouser = require(__dirname + '/../index.js')
 const MongoClient = require('mongodb').MongoClient
 
-// configuration
-/*
-mouser.set('facebook', { id: config.facebook.id, secret: config.facebook.secret} )
-mouser.set('google', { id: config.google.id, secret: config.google.secret } )
-mouser.set('token', { secret: config.token.secret, expiresIn: config.token.expiresIn } )
-mouser.set('mongo', { uri: config.mongo.uri, userCollection: config.mongo.userCollection} )
-*/
-mouser.settings = config
+const stuff = { }
 
-console.log(mouser.settings)
+mouser.use('collection', 'customers')
 
 
 // connect to database
 MongoClient.connect(config.mongo.uri)
   .then(db => {
+    stuff.db = db // we safe-keep the db so we can cleanup later
     console.log("connected to database")
     // initialize database
     mouser.use("db", db)
+
+    // just for testing purposes ... you should not close the db here
+    //db.close()
   })
   .catch(err => {
     console.log("error:", err)
   })
 
+mouser.info()
 
+
+process.on('SIGINT', cleanup)
+process.on('SIGTERM', cleanup)
+
+function cleanup() {
+  console.log('cleaning up ... somebody gotta do the dirty work')
+  if( stuff.db ) {
+    stuff.db.close()
+  }
+}

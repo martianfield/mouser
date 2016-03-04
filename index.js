@@ -1,9 +1,13 @@
 'use strict'
 
-let settings = require(__dirname + '/src/settings.js')
-let use = require(__dirname + '/src/use.js')
+const use = require(__dirname + '/src/use.js')
+const UserDA = require(__dirname + '/src/user-da.js')
 
-module.exports.set = settings.set
-module.exports.settings = settings.settings
 module.exports.use = use.use
 
+
+module.exports.info = () => {
+  console.log("Mouser Info")
+  console.log(`- user DAO db: ${UserDA.O.db}`)
+  console.log(`- user DAO collection: ${UserDA.O.collection}`)
+}

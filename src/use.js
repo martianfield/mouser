@@ -1,17 +1,19 @@
 'use strict'
 
-const UserDAO = require(__dirname + '/user-dao.js').UserDAO
-const daos = {}
+const UserDA = require(__dirname + '/user-da.js')
+
 
 const use = (target, value) => {
   target = target.toLowerCase().trim()
   switch(target) {
     case 'db':
-      console.log("using 'db'")
-      console.log("creating DAOs")
-      daos.user = new UserDAO(value)
+      UserDA.O.db = value
+      break
+    case 'collection':
+      UserDA.O.collection = value
       break
   }
 }
+
 
 module.exports.use = use
