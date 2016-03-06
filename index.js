@@ -11,6 +11,9 @@ module.exports.use = use.use
 // TODO consider renaming
 module.exports.users = UserDA.O
 
+// user
+module.exports.User = require(__dirname + '/src/user.js')
+
 // roles functions
 module.exports.hasRole = roles.hasRole
 module.exports.addRole = roles.addRole
