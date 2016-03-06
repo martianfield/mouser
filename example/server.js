@@ -9,7 +9,10 @@ const stuff = { }
 // tell mouser what mongo collection to use
 mouser.use('collection', 'users') // 'users' is actually the default, so we could omit this
 // tell mouser what the token secret is and when it expires
-mouser.use('token', 'LifeIsButAWalkingShadow', 7 * 24 * 60 * 60)
+mouser.use('token', config.token.secret, config.token.expiresIn)
+// as to Facebook and Google auth
+mouser.use('facebook', config.facebook.id, config.facebook.secret)
+mouser.use('google', config.google.id, config.google.secret)
 
 // connect to database
 MongoClient.connect(config.mongo.uri)
