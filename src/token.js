@@ -5,5 +5,6 @@ function Token() {
   this.secret = 'no_secret'
 }
 
+
 const O = new Token()
 module.exports.O = O

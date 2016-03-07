@@ -39,6 +39,10 @@ function UserDAO() {
     return this.db.collection(this.collection).find({"id":id}).limit(1).next()
   }
 
+  this.one = function(filter, upsert) {
+
+  }
+
   this.info = function() {
     console.log("UserDAO Info")
     console.log(`- collection: ${this.collection}`)
