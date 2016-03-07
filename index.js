@@ -3,6 +3,7 @@
 const use = require(__dirname + '/src/use.js')
 const UserDA = require(__dirname + '/src/user-da.js')
 const roles = require(__dirname + '/src/roles.js')
+const middleware = require(__dirname + '/src/middleware.js')
 
 // settings via use
 module.exports.use = use.use
@@ -18,6 +19,9 @@ module.exports.User = require(__dirname + '/src/user.js')
 module.exports.hasRole = roles.hasRole
 module.exports.addRole = roles.addRole
 module.exports.removeRole = roles.removeRole
+
+// middleware
+module.exports.requireLogin = middleware.requireLogin
 
 // info
 module.exports.info = () => {
