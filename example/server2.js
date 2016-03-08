@@ -9,7 +9,7 @@ const port = process.env.PORT || 8080
 // set up mouser (hooks up middleware like client-session)
 mouser.use('app', app)
 
-// hook up middleware
+// hook up middleware at application level
 app.use(mouser.requireLogin)
 
 
