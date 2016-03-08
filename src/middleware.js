@@ -7,29 +7,64 @@ const path = require('path')
 const authBasePath = 'auth/' // TODO make this a setting
 const cookieName = 'mouser'
 
-// TODO make the cookie password a setting
-module.exports.clientSession = client_session({
-  cookieName: cookieName,
-  secret: 'my_super_secret',
-  duration: 7 * 24 * 60 * 60 * 1000,
-  activeDuration: 7 * 24 * 60 * 60 * 1000
-})
+const options = {
+  protectedPaths:[],
+  protectBasePaths: true
+}
 
-module.exports.requireLogin = (req, res, next) => {
+
+function protect(paths, protectBasePath) {
+  options.protectBasePaths = typeof protectBasePath !== 'undefined' ? Boolean(protectBasePath) : true
+  options.protectedPaths = paths
+}
+
+function requireLogin(req, res, next) {
   console.log("checking login state")
-  // in case the user is using this at app level, we need to make sure that at least the authentication pages work
-  if(req.url.toLowerCase().startsWith(authBasePath)) {
-    next()
+
+  // is the requested url protected?
+  let isProtected = false
+  for(let i=0; i < options.protectedPaths.length; i += 1) {
+    let path = options.protectedPaths[i].toLowerCase()
+    if(options.protectBasePaths) {
+      if( req.url.toLocaleLowerCase() === path) {
+        isProtected = true
+        break
+      }
+    }
+    path += '/'
+    if(req.url.toLowerCase().startsWith(path)) {
+      isProtected = true
+      break
+    }
   }
 
-  // is the user logged in? if not, display the login select page
-  if (req[cookieName] && req[cookieName].user) {
-    // user is logged in
+  if(! isProtected ) {
+    console.log("requested url is NOT protected")
     next()
   }
   else {
-    // need login
-    // TODO use template engine instead
-    res.sendFile(path.resolve(__dirname + '/../views/select_login.html'))
+    console.log("requested url IS protected")
+    // is the user logged in? if not, display the login select page
+    if (req[cookieName] && req[cookieName].user) {
+      // user is logged in
+      next()
+    }
+    else {
+      // need login
+      // TODO use template engine instead
+      res.sendFile(path.resolve(__dirname + '/../views/select_login.html'))
+    }
   }
+
+
 }
+
+module.exports.requireLogin = requireLogin
+module.exports.protect = protect
+
+module.exports.clientSession = client_session({
+  cookieName: cookieName,
+  secret: 'my_super_secret', // TODO make the cookie password a setting
+  duration: 7 * 24 * 60 * 60 * 1000,
+  activeDuration: 7 * 24 * 60 * 60 * 1000
+})

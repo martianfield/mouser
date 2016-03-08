@@ -30,7 +30,11 @@ function use(target, values) {
       Google.O.secret = values[1]
       break
     case 'app':
-      values[0].use(middleware.clientSession)
+      let app = values[0]
+      // make express use client-session on the app level
+      app.use(middleware.clientSession)
+      // make express use our login protecting middleware
+      app.use(middleware.requireLogin)
       break
 
 

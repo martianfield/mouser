@@ -21,7 +21,7 @@ module.exports.addRole = roles.addRole
 module.exports.removeRole = roles.removeRole
 
 // middleware
-module.exports.requireLogin = middleware.requireLogin
+module.exports.protect = middleware.protect
 
 // info
 module.exports.info = () => {

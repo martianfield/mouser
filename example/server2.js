@@ -6,17 +6,23 @@ const mouser = require(__dirname + '/../index.js')
 
 const port = process.env.PORT || 8080
 
-// set up mouser (hooks up middleware like client-session)
+// tell mouser which app to use
 mouser.use('app', app)
 
-// hook up middleware at application level
-app.use(mouser.requireLogin)
+// require login on the all URIs starting with the the paths given
+mouser.protect(['/user', '/downloads'], true)
 
 
 // basic route
 app.get('/', (req, res) => {
   res.send("Hello world. ")
 })
+
+// last resort
+app.use(function(req, res) {
+  res.status(404).send('Sorry cant find that!');
+});
+
 
 // run server
 app.listen(port)
