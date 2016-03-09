@@ -2,9 +2,8 @@
 
 const _ = require('lodash')
 const client_session = require('client-sessions')
-const path = require('path')
+const log = require(__dirname + '/log.js')
 
-const authBasePath = 'auth/' // TODO make this a setting
 const cookieName = 'mouser'
 
 const options = {
@@ -26,7 +25,7 @@ function protect(paths, protectBasePath) {
 }
 
 function requireLogin(req, res, next) {
-  console.log("checking login state")
+  log("checking login state")
 
   // is the requested url protected?
   let isProtected = false
@@ -46,11 +45,11 @@ function requireLogin(req, res, next) {
   }
 
   if(! isProtected ) {
-    console.log(`url is NOT protected [${req.url}]`)
+    log(`url is NOT protected [${req.url}]`)
     next()
   }
   else {
-    console.log(`requested url IS protected [${req.url}]`)
+    log(`requested url IS protected [${req.url}]`)
     // is the user logged in? if not, display the login select page
     if (req[cookieName] && req[cookieName].user) {
       // user is logged in
@@ -58,7 +57,7 @@ function requireLogin(req, res, next) {
     }
     else {
       // need login
-      console.log("redirecting to login")
+      log("redirecting to login")
       res.redirect('/login')
     }
   }

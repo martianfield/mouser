@@ -4,6 +4,7 @@ const use = require(__dirname + '/src/use.js')
 const UserDA = require(__dirname + '/src/user-da.js')
 const roles = require(__dirname + '/src/roles.js')
 const middleware = require(__dirname + '/src/middleware.js')
+const log = require(__dirname + '/src/log.js')
 
 // settings via use
 module.exports.use = use.use
@@ -28,4 +29,9 @@ module.exports.info = () => {
   console.log("Mouser Info")
   console.log(`- user DAO db: ${UserDA.O.db}`)
   console.log(`- user DAO collection: ${UserDA.O.collection}`)
+}
+
+// log
+module.exports.silent = (silent) => {
+  log.options.silent = silent
 }

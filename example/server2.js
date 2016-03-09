@@ -6,6 +6,9 @@ const mouser = require(__dirname + '/../index.js')
 
 const port = process.env.PORT || 8080
 
+// turn log messages on
+mouser.silent(false)
+
 // tell mouser which app to use
 mouser.use('app', app)
 

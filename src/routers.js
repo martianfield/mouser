@@ -9,6 +9,10 @@ router_login.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname + '/../views/select_login.html'))
 })
 
+router_login.get('/facebook', (req, res) => {
+  res.send("facebook")
+})
+
 /*
 router_login.get('/callback', (req,res) => {
   let token = req.query.token;
