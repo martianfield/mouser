@@ -1,6 +1,6 @@
 'use strict'
 
-
+const _ = require('lodash')
 const client_session = require('client-sessions')
 const path = require('path')
 
@@ -14,8 +14,15 @@ const options = {
 
 
 function protect(paths, protectBasePath) {
+  // clean up paths array
+  options.protectedPaths = []
+  paths.forEach(path => {
+    // make sure the paths are lowercase and in the format '/pathname'
+    let cleanedPath = '/' + _.trim(path.toLowerCase(), '/')
+    options.protectedPaths.push(cleanedPath)
+  })
   options.protectBasePaths = typeof protectBasePath !== 'undefined' ? Boolean(protectBasePath) : true
-  options.protectedPaths = paths
+
 }
 
 function requireLogin(req, res, next) {
@@ -24,7 +31,7 @@ function requireLogin(req, res, next) {
   // is the requested url protected?
   let isProtected = false
   for(let i=0; i < options.protectedPaths.length; i += 1) {
-    let path = options.protectedPaths[i].toLowerCase()
+    let path = options.protectedPaths[i]
     if(options.protectBasePaths) {
       if( req.url.toLocaleLowerCase() === path) {
         isProtected = true
