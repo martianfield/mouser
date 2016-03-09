@@ -6,6 +6,11 @@ const Facebook = require(__dirname + '/auth-facebook.js')
 const Google = require(__dirname + '/auth-google.js')
 const middleware = require(__dirname + '/middleware.js')
 const routers = require(__dirname + '/routers.js')
+const settings = require(__dirname + '/settings.js')
+
+const options = {
+  app: null
+}
 
 function use(target, values) {
   // TODO for some reason rest args do not work ... hence the nasty pre 2015 workaround below
@@ -23,21 +28,21 @@ function use(target, values) {
       Token.O.expiresIn = values[1]
       break
     case 'facebook':
-      Facebook.O.appId = values[0]
-      Facebook.O.secret = values[1]
+      settings.providers.facebook.appId = values[0]
+      settings.providers.facebook.appSecret = values[1]
+      Facebook.init()
       break
     case 'google':
-      Google.O.appId = values[0]
-      Google.O.secret = values[1]
+      Google.setup(values[0], values[1])
       break
     case 'app':
-      let app = values[0]
+      options.app = values[0]
       // make express use client-session on the app level
-      app.use(middleware.clientSession)
+      options.app.use(middleware.clientSession)
       // make express use our login protecting middleware
-      app.use(middleware.requireLogin)
+      options.app.use(middleware.requireLogin)
       // add login routers
-      app.use('/login', routers.login)
+      options.app.use('/login', routers.login)
       break
 
 

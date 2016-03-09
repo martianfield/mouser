@@ -26,6 +26,8 @@
     "jsonwebtoken": "^5.7.0",
     "lodash": "^4.6.1",
     "mongodb": "^2.1.7",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.0",
     "setthings": "^0.2.0"
   }
 }

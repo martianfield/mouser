@@ -1,13 +1,16 @@
 'use strict'
 
 const app = require('express')()
-const session = require('client-sessions')
+const config = require(__dirname + '/config.js')
 const mouser = require(__dirname + '/../index.js')
 
 const port = process.env.PORT || 8080
 
 // turn log messages on
 mouser.silent(false)
+
+// set up facebook and google (Note: this needs to be done before setting the app)
+mouser.use('facebook', config.facebook.id, config.facebook.secret)
 
 // tell mouser which app to use
 mouser.use('app', app)
