@@ -3,6 +3,10 @@ const settings = {
     facebook : {
       appId:null,
       appSecret:null
+    },
+    google: {
+      appId:null,
+      appSecret:null
     }
   },
   token: {

@@ -6,9 +6,6 @@ const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const settings = require(__dirname + '/settings.js')
 
-// get configuration
-//const config = require(__dirname + '/../../config/config.js');
-
 const init = () => {
   // set up passport to use facebook strategy
   // TODO callback URL is hardcoded
@@ -26,7 +23,7 @@ const init = () => {
     }
   ));
 
-// initialize passport
+  // initialize passport
   router.use(passport.initialize());
 }
 
@@ -42,7 +39,7 @@ router.get('/callback',
       // create a user object
       let user = userFromRequest(req);
       // create token
-      var token = jwt.sign(user, "this_is_my_secret", {expiresIn:10*24*60*60});
+      var token = jwt.sign(user, settings.token.secret, {expiresIn:settings.token.expiresIn});
       // redirect to login callback page, taking the token along so we can use it client side
       res.redirect('/login/callback?token=' + token);
     }

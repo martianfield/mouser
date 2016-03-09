@@ -24,8 +24,8 @@ function use(target, values) {
       UserDA.O.collection = values[0]
       break
     case 'token':
-      Token.O.secret = values[0]
-      Token.O.expiresIn = values[1]
+      settings.token.secret = values[0]
+      settings.token.expiresIn = values[1]
       break
     case 'facebook':
       settings.providers.facebook.appId = values[0]
@@ -33,7 +33,9 @@ function use(target, values) {
       Facebook.init()
       break
     case 'google':
-      Google.setup(values[0], values[1])
+      settings.providers.google.appId = values[0]
+      settings.providers.google.appSecret = values[1]
+      Google.init()
       break
     case 'app':
       options.app = values[0]
