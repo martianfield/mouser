@@ -46,11 +46,11 @@ function requireLogin(req, res, next) {
   }
 
   if(! isProtected ) {
-    console.log("requested url is NOT protected")
+    console.log(`url is NOT protected [${req.url}]`)
     next()
   }
   else {
-    console.log("requested url IS protected")
+    console.log(`requested url IS protected [${req.url}]`)
     // is the user logged in? if not, display the login select page
     if (req[cookieName] && req[cookieName].user) {
       // user is logged in
@@ -58,8 +58,8 @@ function requireLogin(req, res, next) {
     }
     else {
       // need login
-      // TODO use template engine instead
-      res.sendFile(path.resolve(__dirname + '/../views/select_login.html'))
+      console.log("redirecting to login")
+      res.redirect('/login')
     }
   }
 

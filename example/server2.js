@@ -10,7 +10,7 @@ const port = process.env.PORT || 8080
 mouser.use('app', app)
 
 // require login on the all URIs starting with the the paths given
-mouser.protect(['user', 'downloads'], false)
+mouser.protect(['user', 'downloads'], true)
 
 
 // basic route
@@ -18,7 +18,12 @@ app.get('/', (req, res) => {
   res.send("Hello world. ")
 })
 
-// last resort
+// another fake page
+app.get('/blog', (req, res) => {
+  res.send('The blog')
+})
+
+// last resort (404)
 app.use(function(req, res) {
   res.status(404).send('Sorry cant find that!');
 });
