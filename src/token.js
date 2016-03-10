@@ -1,3 +1,4 @@
+/*
 'use strict'
 
 function Token() {
@@ -8,3 +9,4 @@ function Token() {
 
 const O = new Token()
 module.exports.O = O
+  */
