@@ -3,12 +3,14 @@
 const _ = require('lodash')
 const client_session = require('client-sessions')
 const log = require(__dirname + '/log.js')
+const settings = require(__dirname + '/settings.js')
 
 const cookieName = 'mouser'
 
 const options = {
   protectedPaths:[],
-  protectBasePaths: true
+  protectBasePaths: true,
+  clientSession: null
 }
 
 
@@ -61,16 +63,22 @@ function requireLogin(req, res, next) {
       res.redirect('/login')
     }
   }
+}
 
+function initClientSession() {
+  options.clientSession = client_session({
+    cookieName: cookieName,
+    secret: settings.session.secret,
+    duration: settings.session.expiresIn,
+    activeDuration: settings.session.expiresIn
+  })
+}
 
+function init() {
+  initClientSession()
 }
 
 module.exports.requireLogin = requireLogin
 module.exports.protect = protect
-
-module.exports.clientSession = client_session({
-  cookieName: cookieName,
-  secret: 'my_super_secret', // TODO make the cookie password a setting
-  duration: 7 * 24 * 60 * 60 * 1000,
-  activeDuration: 7 * 24 * 60 * 60 * 1000
-})
+module.exports.init = init
+module.exports.clientSession = () => { return options.clientSession }

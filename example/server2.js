@@ -9,8 +9,9 @@ const port = process.env.PORT || 8080
 // turn log messages on
 mouser.silent(false)
 
-// set up token (Note: this needs to be done before setting the app)
+// set up token and session (Note: this needs to be done before setting the app)
 mouser.use('token', config.token.secret, config.token.expiresIn)
+mouser.use('session', config.session.secret, config.session.expiresIn )
 // set up facebook and google (Note: this needs to be done before setting the app)
 mouser.use('facebook', config.facebook.id, config.facebook.secret)
 mouser.use('google', config.google.id, config.google.secret)

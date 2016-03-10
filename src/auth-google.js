@@ -13,11 +13,10 @@ const settings = require(__dirname + '/settings.js')
 
 const init = () => {
   // set up passport to use google oauth 2 strategy
-  // TODO callback url is hardcoded
   const strategyOptions = {
     clientID: settings.providers.google.appId,
     clientSecret: settings.providers.google.appSecret,
-    callbackURL: "http://localhost:8080/login/google/callback"
+    callbackURL: `${settings.paths.base}/${settings.paths.login}/google/callback`
   }
   passport.use( new Strategy(
     strategyOptions,

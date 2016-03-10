@@ -27,6 +27,11 @@ function use(target, values) {
       settings.token.secret = values[0]
       settings.token.expiresIn = values[1]
       break
+    case 'session':
+      settings.session.secret = values[0]
+      settings.session.expiresIn = values[1]
+      middleware.init()
+      break
     case 'facebook':
       settings.providers.facebook.appId = values[0]
       settings.providers.facebook.appSecret = values[1]
@@ -40,11 +45,11 @@ function use(target, values) {
     case 'app':
       options.app = values[0]
       // make express use client-session on the app level
-      options.app.use(middleware.clientSession)
+      options.app.use(middleware.clientSession())
       // make express use our login protecting middleware
       options.app.use(middleware.requireLogin)
       // add login routers
-      options.app.use('/login', routers.login)
+      options.app.use(`/${settings.paths.login}`, routers.login)
       break
 
 

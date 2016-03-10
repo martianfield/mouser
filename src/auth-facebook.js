@@ -8,11 +8,10 @@ const settings = require(__dirname + '/settings.js')
 
 const init = () => {
   // set up passport to use facebook strategy
-  // TODO callback URL is hardcoded
   const optionsFacebook = {
     clientID: settings.providers.facebook.appId,
     clientSecret: settings.providers.facebook.appSecret,
-    callbackURL: "http://localhost:8080/login/facebook/callback",
+    callbackURL: `${settings.paths.base}/${settings.paths.login}/facebook/callback`,
     profileFields: ['id', 'displayName', 'emails', 'name', 'profileUrl', 'gender']
   };
   passport.use( new FacebookStrategy(

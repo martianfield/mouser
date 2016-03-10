@@ -1,4 +1,8 @@
 const settings = {
+  paths: {
+    base:'http://localhost:8080',
+    login:'login'
+  },
   providers: {
     facebook : {
       appId:null,
@@ -10,6 +14,10 @@ const settings = {
     }
   },
   token: {
+    secret: null,
+    expiresIn: 10*24*60
+  },
+  session: {
     secret: null,
     expiresIn: 10*24*60
   }
