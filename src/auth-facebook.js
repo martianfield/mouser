@@ -66,5 +66,6 @@ function userFromRequest(req) {
   return user
 }
 
+
 module.exports.init = init
 module.exports.router = router

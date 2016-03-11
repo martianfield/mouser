@@ -7,37 +7,24 @@ const expect = chai.expect
 const mouser = require(__dirname + '/../index.js')
 const use = require(__dirname + '/../src/use.js')
 const userDA = require(__dirname + '/../src/user-da.js')
-const token = require(__dirname + '/../src/token.js')
+const settings = require(__dirname + '/../src/settings.js')
 const facebook = require(__dirname + '/../src/auth-facebook.js')
 const google = require(__dirname + '/../src/auth-google.js')
 const google2 = require(__dirname + '/../src/auth-google.js')
 
 describe("Settings", () => {
-  it("Use 'db", () => {
+  it("Use 'database", () => {
     // arrange
     let pseudoDb = { mongo:"rocks" }
     let collection = 'customers'
     // act
-    mouser.use('db', pseudoDb )
-    mouser.use('collection', 'customers')
+    mouser.use('database', pseudoDb, collection)
     // assert
-    expect(userDA.O).to.not.equal(null)
-    expect(userDA.O.db).to.not.equal(null)
-    expect(userDA.O.collection).to.not.equal(null)
-    expect(userDA.O.db).to.deep.equal(pseudoDb)
-    expect(userDA.O.collection).to.deep.equal('customers')
-  })
-
-  it("Use 'token'", () => {
-    // arrange
-    let secret = "DoubleDoubleToilAndTrouble"
-    let expiresIn = 30 * 24 * 60 * 60
-    // act
-    mouser.use('token', secret, expiresIn)
-    // assert
-    expect(token.O).to.not.equal(null)
-    expect(token.O.secret).to.equal(secret)
-    expect(token.O.expiresIn).to.equal(expiresIn)
+    expect(userDA.options).to.not.equal(null)
+    expect(userDA.options.db).to.not.equal(null)
+    expect(userDA.options.collection).to.not.equal(null)
+    expect(userDA.options.db).to.deep.equal(pseudoDb)
+    expect(userDA.options.collection).to.deep.equal('customers')
   })
 
   it("Use 'facebook'", () => {
@@ -47,9 +34,9 @@ describe("Settings", () => {
     // act
     mouser.use('facebook', appId, secret)
     // assert
-    expect(facebook.O).to.not.equal(null)
-    expect(facebook.O.appId).to.equal(appId)
-    expect(facebook.O.secret).to.equal(secret)
+    expect(settings.providers.facebook).to.not.equal(null)
+    expect(settings.providers.facebook.appId).to.equal(appId)
+    expect(settings.providers.facebook.appSecret).to.equal(secret)
   })
 
   it("Use 'google'", () => {
@@ -59,9 +46,9 @@ describe("Settings", () => {
     // act
     mouser.use('google', appId, secret)
     // assert
-    expect(google.O).to.not.equal(null)
-    expect(google.O.appId).to.equal(appId)
-    expect(google.O.secret).to.equal(secret)
+    expect(settings.providers.google).to.not.equal(null)
+    expect(settings.providers.google.appId).to.equal(appId)
+    expect(settings.providers.google.appSecret).to.equal(secret)
   })
 
 

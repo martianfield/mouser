@@ -6,8 +6,6 @@ const MongoClient = require('mongodb').MongoClient
 
 const stuff = { }
 
-// tell mouser what mongo collection to use
-mouser.use('collection', 'users') // 'users' is actually the default, so we could omit this
 // tell mouser what the token secret is and when it expires
 mouser.use('token', config.token.secret, config.token.expiresIn)
 // as to Facebook and Google auth
@@ -20,7 +18,7 @@ MongoClient.connect(config.mongo.uri)
     stuff.db = db // we safe-keep the db so we can cleanup() later
     console.log("connected to database")
     // initialize database
-    mouser.use("db", db)
+    mouser.use("database", db, "user")
   })
   .catch(err => {
     console.log("error:", err)

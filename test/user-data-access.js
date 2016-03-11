@@ -29,14 +29,13 @@ describe("User Data Access", () => {
       })
   })
 
-  it('create user', (done) => {
+  it('create()', (done) => {
     let db = null
     MongoClient.connect(uri)
       .then(database => {
         db = database
-        mouser.use('db', db)
-        mouser.use('collection', collection)
-        return mouser.users.create({name:"Rory Bosio"})
+        mouser.use('database', db, collection)
+        return userDA.create({name:"Rory Bosio"})
       })
       .then(doc => {
         expect(doc.name).to.equal('Rory Bosio')
@@ -48,14 +47,13 @@ describe("User Data Access", () => {
       })
   })
 
-  it('read users', (done) => {
+  it('find()', (done) => {
     let db = null
     MongoClient.connect("mongodb://localhost:27017/mouser")
       .then(database => {
         db = database
-        mouser.use('db', db)
-        mouser.use('collection', collection)
-        return mouser.users.all()
+        mouser.use('database', db, collection)
+        return userDA.find({})
       })
       .then(docs => {
         let doc = docs[0]

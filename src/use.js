@@ -1,7 +1,7 @@
 'use strict'
 
 const UserDA = require(__dirname + '/user-da.js')
-const Token = require(__dirname + '/token.js')
+//const Token = require(__dirname + '/token.js')
 const Facebook = require(__dirname + '/auth-facebook.js')
 const Google = require(__dirname + '/auth-google.js')
 const middleware = require(__dirname + '/middleware.js')
@@ -17,12 +17,17 @@ function use(target, values) {
   target = target.toLowerCase().trim()
   var values = Array.prototype.slice.call(arguments, use.length - 1);
   switch(target) {
+    case 'database':
+      UserDA.setDb(values[0], values[1])
+      break
+    /*
     case 'db':
       UserDA.O.db = values[0]
       break
     case 'collection':
       UserDA.O.collection = values[0]
       break
+    */
     case 'token':
       settings.token.secret = values[0]
       settings.token.expiresIn = values[1]
