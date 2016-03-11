@@ -20,6 +20,9 @@ const settings = {
   session: {
     secret: null,
     expiresIn: 10*24*60
+  },
+  database: {
+    collection: 'users'
   }
 }
 

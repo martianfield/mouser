@@ -13,18 +13,18 @@ const google = require(__dirname + '/../src/auth-google.js')
 const google2 = require(__dirname + '/../src/auth-google.js')
 
 describe("Settings", () => {
-  it("Use 'database", () => {
+  it("use('db') and database settings" , () => {
     // arrange
     let pseudoDb = { mongo:"rocks" }
     let collection = 'customers'
     // act
-    mouser.use('database', pseudoDb, collection)
+    settings.database.collection = collection
+    mouser.use('db', pseudoDb)
     // assert
-    expect(userDA.options).to.not.equal(null)
-    expect(userDA.options.db).to.not.equal(null)
-    expect(userDA.options.collection).to.not.equal(null)
-    expect(userDA.options.db).to.deep.equal(pseudoDb)
-    expect(userDA.options.collection).to.deep.equal('customers')
+    expect(userDA.db()).to.not.equal(null)
+    expect(settings.database.collection).to.not.equal(null)
+    expect(userDA.db()).to.deep.equal(pseudoDb)
+    expect(settings.database.collection).to.deep.equal('customers')
   })
 
   it("Use 'facebook'", () => {

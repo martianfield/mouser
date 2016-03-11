@@ -1,23 +1,24 @@
 'use strict'
 
-const opt = { db: null}
+const settings = require(__dirname + '/settings.js')
+let db = "krakatau"
 
-const setDb = (db, collection) => {
-  opt.db = db
-  opt.collection = collection
+
+const init = (database) => {
+  db = database
 }
 
 const find = (filter) => {
-  return opt.db.collection(opt.collection).find(filter).toArray()
+  return db.collection(settings.database.collection).find(filter).toArray()
 }
 
 const findOne = (filter) => {
-  return opt.db.collection(opt.collection).find(filter).limit(1).next()
+  return db.collection(settings.database.collection).find(filter).limit(1).next()
 }
 
 const create = (doc) => {
   return new Promise((resolve, reject) => {
-    opt.db.collection(opt.collection).insertOne(doc)
+    db.collection(settings.database.collection).insertOne(doc)
       .then(result => {
         resolve(result.ops[0])
       })
@@ -28,8 +29,8 @@ const create = (doc) => {
 }
 
 
-module.exports.setDb = setDb
+module.exports.init = init
 module.exports.find = find
 module.exports.findOne = findOne
 module.exports.create = create
-module.exports.options = opt
+module.exports.db = () => db
