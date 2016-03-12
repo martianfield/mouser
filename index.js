@@ -5,6 +5,7 @@ const UserDA = require(__dirname + '/src/user-da.js')
 const roles = require(__dirname + '/src/roles.js')
 const middleware = require(__dirname + '/src/middleware.js')
 const log = require(__dirname + '/src/log.js')
+const settings = require(__dirname + '/src/settings.js')
 
 // settings via use
 module.exports.use = use.use
@@ -27,8 +28,8 @@ module.exports.protect = middleware.protect
 // info
 module.exports.info = () => {
   console.log("Mouser Info")
-  console.log(`- user DAO db: ${UserDA.O.db}`)
-  console.log(`- user DAO collection: ${UserDA.O.collection}`)
+  console.log(`- user DAO db: ${UserDA.db()}`)
+  console.log(`- user DAO collection: ${settings.database.collection}`)
 }
 
 // log

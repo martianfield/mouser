@@ -16,7 +16,7 @@ describe("Settings", () => {
   it("use('db') and database settings" , () => {
     // arrange
     let pseudoDb = { mongo:"rocks" }
-    let collection = 'customers'
+    let collection = 'users_test'
     // act
     settings.database.collection = collection
     mouser.use('db', pseudoDb)
@@ -24,7 +24,7 @@ describe("Settings", () => {
     expect(userDA.db()).to.not.equal(null)
     expect(settings.database.collection).to.not.equal(null)
     expect(userDA.db()).to.deep.equal(pseudoDb)
-    expect(settings.database.collection).to.deep.equal('customers')
+    expect(settings.database.collection).to.deep.equal(collection)
   })
 
   it("Use 'facebook'", () => {

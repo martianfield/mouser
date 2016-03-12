@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken')
 const router_login = require('express').Router()
 const Facebook = require(__dirname + '/auth-facebook.js')
 const Google = require(__dirname + '/auth-google.js')
+const settings = require(__dirname + '/settings.js')
+const user_da = require(__dirname + '/user-da.js')
 
 router_login.get('/', (req, res) => {
   // display login select screen
@@ -18,12 +20,22 @@ router_login.get('/callback', (req, res) => {
   }
   else {
     // verify token
-    jwt.verify(token, "this_is_my_secret", function(err, decoded) {
+    jwt.verify(token, settings.token.secret, function(err, decoded) {
       if (err) {
+        // TODO display errors more gracefully ... display a view instead, or (probably better) return a HTTP error code (so the consumer of mouser can decide what to do)
         res.send(`Token Error: ${err.name} | ${err.message}`);
       }
       else {
-        res.send(`Token received: ${token}<hr>${JSON.stringify(decoded, null, 2)}`);
+        user_da.findOrCreate(decoded)
+          .then(user => {
+            res.send(`user found or created: ${JSON.stringify(user, null, 2)}`)
+            // TODO cache user in session / cookie ... what if mouser is used in an app?
+          })
+          .catch(err => {
+            // TODO handle error more gracefully
+            res.send(`Token Error: ${err.name} | ${err.message}`);
+          })
+
       }
     })
   }

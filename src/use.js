@@ -17,6 +17,7 @@ function use(target, values) {
   var values = Array.prototype.slice.call(arguments, use.length - 1);
   switch(target) {
     case 'db':
+    case 'database':
       UserDA.init(values[0])
       break
     case 'token':
