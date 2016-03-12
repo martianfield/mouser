@@ -12,11 +12,11 @@ const port = process.env.PORT || 8080
 mouser.silent(false)
 
 // set up token and session (Note: this needs to be done before setting the app)
-mouser.use('token', config.token.secret, config.token.expiresIn)
-mouser.use('session', config.session.secret, config.session.expiresIn )
+mouser.use('token', {secret:config.token.secret, expiresIn:config.token.expiresIn})
+mouser.use('session', {secret:config.session.secret, expiresIn:config.session.expiresIn} )
 // set up facebook and google (Note: this needs to be done before setting the app)
-mouser.use('facebook', config.facebook.id, config.facebook.secret)
-mouser.use('google', config.google.id, config.google.secret)
+mouser.use('facebook', {appId:config.facebook.id, appSecret:config.facebook.secret})
+mouser.use('google', {appId:config.google.id, appSecret:config.google.secret})
 
 // tell mouser which app to use
 mouser.use('app', app)

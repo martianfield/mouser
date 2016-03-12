@@ -6,11 +6,13 @@ const settings = {
   providers: {
     facebook : {
       appId:null,
-      appSecret:null
+      appSecret:null,
+      active:false
     },
     google: {
       appId:null,
-      appSecret:null
+      appSecret:null,
+      active:false
     }
   },
   token: {
