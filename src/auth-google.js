@@ -73,12 +73,14 @@ function userFromRequest(req) {
     lastName: name.familyName,
     emails: [],
     gender: req.user.gender,
-    authDisplayName: req.user.displayName,
-    authProvider: "google",
-    authId: req.user.id,
-    authProfileUrl: req.user._json.url
+    auth: {
+      provider: "google",
+      id: req.user.id,
+      displayName: req.user.displayName,
+      profileUrl: req.user._json.url
+    }
   }
-  return user;
+  return user
 }
 
 

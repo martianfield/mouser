@@ -46,7 +46,7 @@ router.get('/callback',
       res.send("There was an error logging in. Please try again.")
     }
   }
-);
+)
 
 function userFromRequest(req) {
   // create a user object
@@ -58,10 +58,12 @@ function userFromRequest(req) {
     lastName: name.familyName,
     emails: req.user.emails,
     gender: req.user.gender,
-    authDisplayName: req.user.displayName,
-    authProvider: "facebook",
-    authId: req.user.id,
-    authProfileUrl: req.user.profileUrl
+    auth: {
+      provider: 'facebook',
+      displayName: req.user.displayName,
+      id: req.user.id,
+      profileUrl: req.user.profileUrl
+    }
   }
   return user
 }
