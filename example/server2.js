@@ -44,10 +44,20 @@ app.get('/', (req, res) => {
   res.send("Hello world. ")
 })
 
+// the protected pages
+app.get('/downloads', (req, res) => {
+  res.send('Downloads')
+})
+app.get('/user', (req, res) => {
+  res.send('User')
+})
+
 // another fake page
 app.get('/blog', (req, res) => {
   res.send('The blog')
 })
+
+
 
 // last resort (404)
 app.use(function(req, res) {
@@ -60,6 +70,7 @@ app.listen(port)
 console.log(`serving at http://localhost:${port}`)
 
 
+/*
 // clean up stuff ......
 process.on('SIGINT', cleanup)
 process.on('SIGTERM', cleanup)
@@ -71,7 +82,7 @@ function cleanup() {
   }
 }
 
-
+*/
 
 
 // see here: https://stormpath.com/blog/everything-you-ever-wanted-to-know-about-node-dot-js-sessions/

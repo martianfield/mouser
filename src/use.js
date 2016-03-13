@@ -14,9 +14,7 @@ const options = {
 }
 
 const use = (target, value) => {
-  // TODO for some reason rest args do not work ... hence the nasty pre 2015 workaround below
   target = target.toLowerCase().trim()
-  var values = Array.prototype.slice.call(arguments, use.length - 1);
   switch(target) {
     case 'db':
     case 'database':
@@ -26,6 +24,9 @@ const use = (target, value) => {
       settings.token = value
       break
     case 'session':
+      if(value.hasOwnProperty('cookieName') === false) {
+        value.cookieName = settings.session.cookieName
+      }
       settings.session = value
       middleware.init()
       break

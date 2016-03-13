@@ -6,6 +6,7 @@ const Facebook = require(__dirname + '/auth-facebook.js')
 const Google = require(__dirname + '/auth-google.js')
 const settings = require(__dirname + '/settings.js')
 const user_da = require(__dirname + '/user-da.js')
+const log = require(__dirname + '/log.js')
 
 router_login.get('/', (req, res) => {
   // display login select screen
@@ -28,8 +29,17 @@ router_login.get('/callback', (req, res) => {
       else {
         user_da.findOrCreate(decoded)
           .then(user => {
-            res.send(`user found or created: ${JSON.stringify(user, null, 2)}`)
+            log(`user found or created: ${JSON.stringify(user, null, 2)}`)
             // TODO cache user in session / cookie ... what if mouser is used in an app?
+            // redirect to requested page (or homepage if no page was requested)
+            if (req[settings.session.cookieName] && req[settings.session.cookieName].requestedPage) {
+              res.redirect(req[settings.session.cookieName].requestedPage)
+            }
+            else {
+              res.redirect('/')
+            }
+
+
           })
           .catch(err => {
             // TODO handle error more gracefully

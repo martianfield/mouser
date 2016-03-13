@@ -21,7 +21,8 @@ const settings = {
   },
   session: {
     secret: null,
-    expiresIn: 10*24*60
+    expiresIn: 10*24*60,
+    cookieName: 'mouser'
   },
   database: {
     collection: 'users'
