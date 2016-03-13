@@ -30,10 +30,13 @@ router_login.get('/callback', (req, res) => {
         user_da.findOrCreate(decoded)
           .then(user => {
             log(`user found or created: ${JSON.stringify(user, null, 2)}`)
-            // TODO cache user in session / cookie ... what if mouser is used in an app?
+            // store token in session cookie TODO what if mouser is used in an app?
+            req[settings.session.cookieName].user = token
             // redirect to requested page (or homepage if no page was requested)
             if (req[settings.session.cookieName] && req[settings.session.cookieName].requestedPage) {
-              res.redirect(req[settings.session.cookieName].requestedPage)
+              let requestedPage = req[settings.session.cookieName].requestedPage
+              req[settings.session.cookieName].requestedPage = null
+              res.redirect(requestedPage)
             }
             else {
               res.redirect('/')

@@ -1,5 +1,6 @@
 'use strict'
 
+const jwt = require('jsonwebtoken')
 const _ = require('lodash')
 const client_session = require('client-sessions')
 const log = require(__dirname + '/log.js')
@@ -52,8 +53,16 @@ function requireLogin(req, res, next) {
     log(`requested url IS protected [${req.url}]`)
     // is the user logged in? if not, display the login select page and remember the page requested
     if (req[settings.session.cookieName] && req[settings.session.cookieName].user) {
-      // user is logged in
-      next()
+      // TODO verify the stored token
+      let user_token = req[settings.session.cookieName].user
+      jwt.verify(user_token, settings.token.secret, function(err, decoded) {
+        if(err) {
+          res.send("MALFUNCTION") // TODO handle gracefully
+        }
+        else {
+          next()
+        }
+      })
     }
     else {
       // remember the page requested
