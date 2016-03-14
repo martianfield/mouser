@@ -36,9 +36,13 @@ const findOrCreate = (user) => {
   })
 }
 
-const create = (doc) => {
+const create = (user) => {
+  // we receive the user without the roles[] array from the callback
+  if(user.hasOwnProperty('roles') === false) {
+    user.roles = []
+  }
   return new Promise((resolve, reject) => {
-    o.db.collection(settings.database.collection).insertOne(doc)
+    o.db.collection(settings.database.collection).insertOne(user)
       .then(result => {
         resolve(result.ops[0])
       })
