@@ -18,6 +18,7 @@ describe("User Data Access", () => {
   before(done => {
     MongoClient.connect(uri)
       .then(database => {
+        mouser.use('db', database)
         db = database
         done()
       })
@@ -78,7 +79,7 @@ describe("User Data Access", () => {
     let db = null
     let user = {firstName:"Test", auth:{provider:'facebook', id:Date.now()}}
     // act
-    MongoClient.connect("mongodb://localhost:27017/mouser")
+    MongoClient.connect(uri)
       .then(database => {
         db = database
         mouser.use('database', db)
@@ -97,5 +98,26 @@ describe("User Data Access", () => {
       .catch(err => {
         done(err)
       })
+  })
+
+  it('addRole()', (done) => {
+    let user = {'firstName': 'Test'}
+    let roleToAdd = 'pacer'
+    userDA.create(user)
+    .then(createdUser => {
+      user = createdUser
+      return userDA.addRole(createdUser, roleToAdd)
+    })
+    .then(roleAdded => {
+      expect(roleAdded).to.equal(true)
+      return userDA.findOne({_id:user._id})
+    })
+    .then(foundUser => {
+      expect(foundUser.roles).to.contain(roleToAdd)
+      done()
+    })
+    .catch(err => {
+      done(err)
+    })
   })
 })
