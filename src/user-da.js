@@ -72,7 +72,24 @@ const addRole = (user, role) => {
         })
     }
   })
+}
 
+const removeRole = (user, role) => {
+  return new Promise((resolve, reject) => {
+    if(roles.hasRole(user,role)) {
+      roles.removeRole(user, role)
+      o.db.collection(settings.database.collection).updateOne({_id:user._id}, {$set:{roles:user.roles}})
+        .then(result => {
+          resolve(result.modifiedCount === 1)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    }
+    else {
+      resolve(false)
+    }
+  })
 }
 
 
@@ -82,5 +99,6 @@ module.exports.findOne = findOne
 module.exports.create = create
 module.exports.findOrCreate = findOrCreate
 module.exports.addRole = addRole
+module.exports.removeRole = removeRole
 
 module.exports.db = () => o.db // TODO do we really need to export this?

@@ -40,13 +40,7 @@ describe("User Data Access", () => {
   })
 
   it('create()', (done) => {
-    let db = null
-    MongoClient.connect(uri)
-      .then(database => {
-        db = database
-        mouser.use('db', db)
-        return userDA.create({name:"Rory Bosio"})
-      })
+    userDA.create({name:"Rory Bosio"})
       .then(doc => {
         expect(doc.name).to.equal('Rory Bosio')
         done()
@@ -57,13 +51,7 @@ describe("User Data Access", () => {
   })
 
   it('find()', (done) => {
-    let db = null
-    MongoClient.connect(uri)
-      .then(database => {
-        db = database
-        mouser.use('database', db)
-        return userDA.find({})
-      })
+    userDA.find({})
       .then(docs => {
         let doc = docs[0]
         expect(doc.name).to.equal('Rory Bosio')
@@ -75,16 +63,8 @@ describe("User Data Access", () => {
   })
 
   it('findOrCreate() - one', (done) => {
-    // arrange
-    let db = null
     let user = {firstName:"Test", auth:{provider:'facebook', id:Date.now()}}
-    // act
-    MongoClient.connect(uri)
-      .then(database => {
-        db = database
-        mouser.use('database', db)
-        return userDA.findOrCreate(user)
-      })
+    userDA.findOrCreate(user)
       .then(doc => {
         expect(doc.auth.id).to.equal(user.auth.id)
         expect(doc._id).to.not.equal(null)
@@ -119,5 +99,27 @@ describe("User Data Access", () => {
     .catch(err => {
       done(err)
     })
+  })
+
+  it('removeRole()', (done) => {
+    let user = {'firstName': 'Test', roles: ['one', 'two', 'three']}
+    let roleToRemove = 'one'
+    userDA.create(user)
+      .then(createdUser => {
+        user = createdUser
+        return userDA.removeRole(createdUser, roleToRemove)
+      })
+      .then(roleRemoved => {
+        expect(roleRemoved).to.equal(true)
+        return userDA.findOne({_id:user._id})
+      })
+      .then(foundUser => {
+        expect(foundUser.roles).to.not.contain(roleToRemove)
+        expect(foundUser.roles.length).to.equal(2)
+        done()
+      })
+      .catch(err => {
+        done(err)
+      })
   })
 })
