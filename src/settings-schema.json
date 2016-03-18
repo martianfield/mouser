@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "object",
+  "title": "Root schema.",
+  "description": "An explanation about the puropose of this instance described by this schema.",
+  "name": "/",
+  "properties": {
+    "token": {
+      "type": "object",
+      "description": "Information about the json web token; how to encrypt it and when it expires.",
+      "properties": {
+        "secret": {
+          "type": "string",
+          "description": "The secret used to encrypt the token."
+        },
+        "expiresIn": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Amount of seconds before the token expires."
+        }
+      }
+    },
+    "session": {
+      "type": "object",
+      "description": "Information about the client session; how to encrypt it and when it expires.",
+      "properties": {
+        "secret": {
+          "type": "string",
+          "description": "The secret used to encrypt the session."
+        },
+        "expiresIn": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Amount of seconds before the session expires."
+        }
+      }
+    },
+    "paths": {
+      "type": "object",
+      "description": "Paths used.",
+      "properties": {
+        "base": {
+          "type": "string",
+          "format": "uri",
+          "description": "The base URI of the web application (e.g. https://localhost:8080)."
+        },
+        "login": {
+          "type": "string",
+          "description": "The path (relative to the base URI) to the login view."
+        },
+        "logout": {
+          "type": "string",
+          "description": "The path (relative to the base URI) to the logout view."
+        }
+      }
+    },
+    "providers": {
+      "type": "object",
+      "description": "Authentication providers.",
+      "properties": {
+        "facebook": {
+          "type": "object",
+          "properties": {
+            "appId": { "type": "string"},
+            "appSecret": { "type": "string"}
+          },
+          "required": ["appId", "appSecret"]
+        },
+        "google": {
+          "type": "object",
+          "properties": {
+            "appId": { "type": "string"},
+            "appSecret": { "type": "string"}
+          },
+          "required": ["appId", "appSecret"]
+        }
+      }
+    }
+  },
+  "required": [
+    "token",
+    "session",
+    "paths",
+    "providers"
+  ]
+}
