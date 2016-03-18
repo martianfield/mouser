@@ -2,10 +2,15 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "/",
   "type": "object",
-  "title": "Root schema.",
-  "description": "An explanation about the puropose of this instance described by this schema.",
-  "name": "/",
+  "description": "Settings schema for Mouser.",
   "properties": {
+    "db": {
+      "type":"object",
+      "properties": {
+        "userCollection": { "type": "string", "description":"Name of the collection to be used to store user data."}
+      },
+      "required": ["userCollection"]
+    },
     "token": {
       "type": "object",
       "description": "Information about the json web token; how to encrypt it and when it expires.",
@@ -19,7 +24,8 @@
           "minimum": 0,
           "description": "Amount of seconds before the token expires."
         }
-      }
+      },
+      "required": ["secret", "expiresIn"]
     },
     "session": {
       "type": "object",
@@ -34,7 +40,8 @@
           "minimum": 0,
           "description": "Amount of seconds before the session expires."
         }
-      }
+      },
+      "required": ["secret", "expiresIn"]
     },
     "paths": {
       "type": "object",
@@ -53,7 +60,8 @@
           "type": "string",
           "description": "The path (relative to the base URI) to the logout view."
         }
-      }
+      },
+      "required": ["base", "login", "logout"]
     },
     "providers": {
       "type": "object",
@@ -79,6 +87,7 @@
     }
   },
   "required": [
+    "db",
     "token",
     "session",
     "paths",
