@@ -6,9 +6,13 @@ const roles = require(__dirname + '/src/roles.js')
 const middleware = require(__dirname + '/src/middleware.js')
 const log = require(__dirname + '/src/log.js')
 const settings = require(__dirname + '/src/settings.js')
+const configure = require(__dirname + '/src/configure.js')
 
 // settings via use
 module.exports.use = use.use
+
+// settings 
+module.exports.configure = configure
 
 // user data access object
 // TODO consider renaming
