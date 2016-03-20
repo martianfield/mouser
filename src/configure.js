@@ -5,11 +5,13 @@ const fs = require('fs')
 const schema = JSON.parse(fs.readFileSync(__dirname + '/settings-schema.json'))
 const validate = jsen(schema)
 
+//const o = { errors: []}
 
-const configure = (settings) => {
+function configure(settings) {
   this.errors = []
+  //o.errors = []
   if( ! validate(settings) ) {
-    this.errors = validate.errors
+    this.errors = Array.from(validate.errors)
     return false
   }
   return true
@@ -17,6 +19,7 @@ const configure = (settings) => {
 
 
 module.exports.configure = configure
+//module.exports.errors = o.errors
 
 // links:
 // http://json-schema.org/
