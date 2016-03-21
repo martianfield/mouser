@@ -14,7 +14,7 @@ module.exports.use = use.use
 // settings 
 module.exports.configure = configure.configure
 //module.exports.config = configure.config  // just an alias
-//module.exports.configurationErrors = configure.errors
+module.exports.configurationErrors = configure.errors
 //module.exports.configErrors = configure.errors // just an alias
 
 // user data access object

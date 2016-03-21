@@ -5,20 +5,25 @@ const fs = require('fs')
 const schema = JSON.parse(fs.readFileSync(__dirname + '/settings-schema.json'))
 const validate = jsen(schema)
 
-//const o = { errors: []}
+const o = { errors: []}
 
 function configure(settings) {
-  this.errors = []
-  //o.errors = []
+  o.errors = []
   if( ! validate(settings) ) {
-    this.errors = Array.from(validate.errors)
+    o.errors = Array.from(validate.errors)
     return false
   }
   return true
 }
 
+Object.defineProperty(configure, 'errors', {
+  get: function() { return o.errors },
+  enumerable: true,
+  configurable: true
+})
 
 module.exports.configure = configure
+module.exports.errors = o.errors
 //module.exports.errors = o.errors
 
 // links:
