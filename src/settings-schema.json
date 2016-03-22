@@ -22,10 +22,12 @@
         "expiresIn": {
           "type": "integer",
           "minimum": 0,
+          "default": 20160,
           "description": "Amount of seconds before the token expires."
         }
       },
-      "required": ["secret", "expiresIn"]
+      "required": ["secret", "expiresIn"],
+      "default": {}
     },
     "session": {
       "type": "object",
@@ -38,10 +40,12 @@
         "expiresIn": {
           "type": "integer",
           "minimum": 0,
+          "default": 20160,
           "description": "Amount of seconds before the session expires."
         }
       },
-      "required": ["secret", "expiresIn"]
+      "required": ["secret", "expiresIn"],
+      "default": {}
     },
     "paths": {
       "type": "object",
@@ -54,14 +58,17 @@
         },
         "login": {
           "type": "string",
-          "description": "The path (relative to the base URI) to the login view."
+          "description": "The path (relative to the base URI) to the login view.",
+          "default": "login"
         },
         "logout": {
           "type": "string",
-          "description": "The path (relative to the base URI) to the logout view."
+          "description": "The path (relative to the base URI) to the logout view.",
+          "default": "logout"
         }
       },
-      "required": ["base", "login", "logout"]
+      "required": ["base", "login", "logout"],
+      "default":{}
     },
     "providers": {
       "type": "object",

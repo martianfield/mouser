@@ -12,10 +12,8 @@ const configure = require(__dirname + '/src/configure.js')
 module.exports.use = use.use
 
 // settings 
-module.exports.configure = configure.configure
-//module.exports.config = configure.config  // just an alias
-module.exports.configurationErrors = configure.errors
-//module.exports.configErrors = configure.errors // just an alias
+module.exports.configure = configure
+module.exports.configuration = configure.configuration
 
 // user data access object
 // TODO consider renaming
