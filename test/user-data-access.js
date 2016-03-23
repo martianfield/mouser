@@ -5,13 +5,11 @@ const should = chai.should()
 const expect = chai.expect
 
 const mouser = require(__dirname + '/../index.js')
-const use = require(__dirname + '/../src/use.js')
 const userDA = require(__dirname + '/../src/user-da.js')
 const MongoClient = require('mongodb').MongoClient
-const settings = require(__dirname + '/../src/settings.js')
 
 describe("User Data Access", () => {
-  settings.database.collection = 'users_test'
+  mouser.configuration["db"] = {userCollection:'users_test'}
   let uri = "mongodb://localhost:27017/mouser"
   let db = null
 
@@ -28,7 +26,7 @@ describe("User Data Access", () => {
   })
 
   after(done => {
-    db.collection(settings.database.collection).drop()
+    db.collection(mouser.configuration.db.userCollection).drop()
       .then(result => {
         db.close()
         done()

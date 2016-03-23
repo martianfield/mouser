@@ -5,39 +5,48 @@ const UserDA = require(__dirname + '/src/user-da.js')
 const roles = require(__dirname + '/src/roles.js')
 const middleware = require(__dirname + '/src/middleware.js')
 const log = require(__dirname + '/src/log.js')
-const settings = require(__dirname + '/src/settings.js')
 const configure = require(__dirname + '/src/configure.js')
 
-// settings via use
-module.exports.use = use.use
+const o = {}
 
-// settings 
-module.exports.configure = configure
-module.exports.configuration = configure.configuration
+// settings via use
+o.use = use.use
+
+// configuration
+o.configure = configure
+Object.defineProperty(o, 'configuration', {
+  get: function() {
+    return configure.configuration
+  },
+  enumerable: true
+})
 
 // user data access object
 // TODO consider renaming
-module.exports.users = UserDA.O
+o.users = UserDA.O
 
 // user
-module.exports.User = require(__dirname + '/src/user.js')
+o.User = require(__dirname + '/src/user.js')
 
 // roles functions
-module.exports.hasRole = roles.hasRole
-module.exports.addRole = roles.addRole
-module.exports.removeRole = roles.removeRole
+o.hasRole = roles.hasRole
+o.addRole = roles.addRole
+o.removeRole = roles.removeRole
 
 // middleware
-module.exports.protect = middleware.protect
+o.protect = middleware.protect
 
 // info
-module.exports.info = () => {
+o.info = () => {
   console.log("Mouser Info")
   console.log(`- user DAO db: ${UserDA.db()}`)
-  console.log(`- user DAO collection: ${settings.database.collection}`)
+  console.log(`- user DAO collection: ${configure.configuration.db.userCollection}`)
 }
 
 // log
-module.exports.silent = (silent) => {
+o.silent = (silent) => {
   log.options.silent = silent
 }
+
+
+module.exports = o

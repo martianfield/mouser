@@ -1,22 +1,27 @@
 'use strict'
 
 const app = require('express')()
-const config = require(__dirname + '/config.js')
+
 const mouser = require(__dirname + '/../index.js')
 const MongoClient = require('mongodb').MongoClient
 
 const stuff = { }
 const port = process.env.PORT || 8080
+const mongoUri = "mongodb://localhost:27017/mouser"
 
 // turn log messages on
 mouser.silent(false)
 
-// set up token and session (Note: this needs to be done before setting the app)
-mouser.use('token', {secret:config.token.secret, expiresIn:config.token.expiresIn})
-mouser.use('session', {secret:config.session.secret, expiresIn:config.session.expiresIn} )
-// set up facebook and google (Note: this needs to be done before setting the app)
-mouser.use('facebook', {appId:config.facebook.id, appSecret:config.facebook.secret})
-mouser.use('google', {appId:config.google.id, appSecret:config.google.secret})
+// load an apply configuration
+let config = require(__dirname + '/config.js')
+if(mouser.configure(config) === false) {
+  console.error("Invalid configuration\n", mouser.configure.errors)
+  process.exit(1)
+}
+// output warnings (if any)
+mouser.configure.warnings.forEach(warning => {
+  console.log("config warning:", warning)
+})
 
 // tell mouser which app to use
 mouser.use('app', app)
@@ -25,7 +30,7 @@ mouser.use('app', app)
 mouser.protect(['user', 'downloads'], true)
 
 // connect to database
-MongoClient.connect(config.mongo.uri)
+MongoClient.connect(mongoUri)
   .then(db => {
     stuff.db = db // we safe-keep the db so we can cleanup() later
     console.log("connected to database")

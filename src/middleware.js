@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const _ = require('lodash')
 const client_session = require('client-sessions')
 const log = require(__dirname + '/log.js')
-const settings = require(__dirname + '/settings.js')
+const configure = require(__dirname + '/configure.js')
 
 const options = {
   protectedPaths:[],
@@ -52,10 +52,10 @@ function requireLogin(req, res, next) {
   else {
     log(`requested url IS protected [${req.url}]`)
     // is the user logged in? if not, display the login select page and remember the page requested
-    if (req[settings.session.cookieName] && req[settings.session.cookieName].user) {
+    if (req[configure.configuration.session.cookieName] && req[configure.configuration.session.cookieName].user) {
       // TODO verify the stored token
-      let user_token = req[settings.session.cookieName].user
-      jwt.verify(user_token, settings.token.secret, function(err, decoded) {
+      let user_token = req[configure.configuration.session.cookieName].user
+      jwt.verify(user_token, configure.configuration.token.secret, function(err, decoded) {
         if(err) {
           res.send("MALFUNCTION") // TODO handle gracefully
         }
@@ -66,7 +66,7 @@ function requireLogin(req, res, next) {
     }
     else {
       // remember the page requested
-      req[settings.session.cookieName].requestedPage = req.url
+      req[configure.configuration.session.cookieName].requestedPage = req.url
       // need login
       log("redirecting to login")
       res.redirect('/login')
@@ -76,10 +76,10 @@ function requireLogin(req, res, next) {
 
 function initClientSession() {
   options.clientSession = client_session({
-    cookieName: settings.session.cookieName,
-    secret: settings.session.secret,
-    duration: settings.session.expiresIn,
-    activeDuration: settings.session.expiresIn
+    cookieName: configure.configuration.session.cookieName,
+    secret: configure.configuration.session.secret,
+    duration: configure.configuration.session.expiresIn,
+    activeDuration: configure.configuration.session.expiresIn
   })
 }
 

@@ -42,9 +42,14 @@
           "minimum": 0,
           "default": 20160,
           "description": "Amount of seconds before the session expires."
+        },
+        "cookieName": {
+          "type": "string",
+          "description": "The session's cookie name",
+          "default": "mouser"
         }
       },
-      "required": ["secret", "expiresIn"],
+      "required": ["secret", "expiresIn", "cookieName"],
       "default": {}
     },
     "paths": {

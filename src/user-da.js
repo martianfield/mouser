@@ -1,6 +1,6 @@
 'use strict'
 
-const settings = require(__dirname + '/settings.js')
+const configure = require(__dirname + '/configure.js')
 const roles = require(__dirname + '/roles.js')
 const o = { db: null}
 
@@ -10,11 +10,11 @@ const init = (database) => {
 }
 
 const find = (filter) => {
-  return o.db.collection(settings.database.collection).find(filter).toArray()
+  return o.db.collection(configure.configuration.db.userCollection).find(filter).toArray()
 }
 
 const findOne = (filter) => {
-  return o.db.collection(settings.database.collection).find(filter).limit(1).next()
+  return o.db.collection(configure.configuration.db.userCollection).find(filter).limit(1).next()
 }
 
 const findOrCreate = (user) => {
@@ -43,7 +43,7 @@ const create = (user) => {
     user.roles = []
   }
   return new Promise((resolve, reject) => {
-    o.db.collection(settings.database.collection).insertOne(user)
+    o.db.collection(configure.configuration.db.userCollection).insertOne(user)
       .then(result => {
         resolve(result.ops[0])
       })
@@ -63,7 +63,7 @@ const addRole = (user, role) => {
       // add the role to roles array
       roles.addRole(user, role)
       // save the user document to mongo
-      o.db.collection(settings.database.collection).updateOne({_id:user._id}, {$set:{roles:user.roles}})
+      o.db.collection(configure.configuration.db.userCollection).updateOne({_id:user._id}, {$set:{roles:user.roles}})
         .then(result => {
           resolve(result.modifiedCount === 1)
         })
@@ -78,7 +78,7 @@ const removeRole = (user, role) => {
   return new Promise((resolve, reject) => {
     if(roles.hasRole(user,role)) {
       roles.removeRole(user, role)
-      o.db.collection(settings.database.collection).updateOne({_id:user._id}, {$set:{roles:user.roles}})
+      o.db.collection(configure.configuration.db.userCollection).updateOne({_id:user._id}, {$set:{roles:user.roles}})
         .then(result => {
           resolve(result.modifiedCount === 1)
         })

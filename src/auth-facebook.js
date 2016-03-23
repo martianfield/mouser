@@ -1,26 +1,26 @@
 'use strict';
 // get modules
-const router = require('express').Router();
-const jwt = require('jsonwebtoken');
-const passport = require('passport');
-const FacebookStrategy = require('passport-facebook').Strategy;
-const settings = require(__dirname + '/settings.js')
+const router = require('express').Router()
+const jwt = require('jsonwebtoken')
+const passport = require('passport')
+const FacebookStrategy = require('passport-facebook').Strategy
+const configure = require(__dirname + '/configure.js')
 
 const init = () => {
   // set up passport to use facebook strategy
   const optionsFacebook = {
-    clientID: settings.providers.facebook.appId,
-    clientSecret: settings.providers.facebook.appSecret,
-    callbackURL: `${settings.paths.base}/${settings.paths.login}/facebook/callback`,
+    clientID: configure.configuration.providers.facebook.appId,
+    clientSecret: configure.configuration.providers.facebook.appSecret,
+    callbackURL: `${configure.configuration.paths.base}/${configure.configuration.paths.login}/facebook/callback`,
     profileFields: ['id', 'displayName', 'emails', 'name', 'profileUrl', 'gender']
-  };
+  }
   passport.use( new FacebookStrategy(
     optionsFacebook,
     function(accessToken, refreshToken, profile, callback) {
       let err = null;
       return callback(err, profile);
     }
-  ));
+  ))
 
   // initialize passport
   router.use(passport.initialize());
@@ -38,7 +38,7 @@ router.get('/callback',
       // create a user object
       let user = userFromRequest(req);
       // create token
-      var token = jwt.sign(user, settings.token.secret, {expiresIn:settings.token.expiresIn});
+      var token = jwt.sign(user, configure.configuration.token.secret, {expiresIn:configure.configuration.token.expiresIn});
       // redirect to login callback page, taking the token along so we can use it client side
       res.redirect('/login/callback?token=' + token);
     }

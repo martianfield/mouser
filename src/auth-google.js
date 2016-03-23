@@ -9,14 +9,14 @@ const router = require('express').Router()
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const Strategy = require('passport-google-oauth').OAuth2Strategy
-const settings = require(__dirname + '/settings.js')
+const configure = require(__dirname + '/configure.js')
 
 const init = () => {
   // set up passport to use google oauth 2 strategy
   const strategyOptions = {
-    clientID: settings.providers.google.appId,
-    clientSecret: settings.providers.google.appSecret,
-    callbackURL: `${settings.paths.base}/${settings.paths.login}/google/callback`
+    clientID: configure.configuration.providers.google.appId,
+    clientSecret: configure.configuration.providers.google.appSecret,
+    callbackURL: `${configure.configuration.paths.base}/${configure.configuration.paths.login}/google/callback`
   }
   passport.use( new Strategy(
     strategyOptions,
@@ -53,7 +53,7 @@ router.get(
       // create a user object
       let user = userFromRequest(req);
       // create token
-      let token = jwt.sign(user, settings.token.secret, {expiresIn:settings.token.expiresIn});
+      let token = jwt.sign(user, configure.configuration.token.secret, {expiresIn:configure.configuration.token.expiresIn});
       // redirect to login callback page, taking the token along so we can use it client side
       res.redirect('/login/callback?token=' + token);
     }

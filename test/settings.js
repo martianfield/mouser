@@ -27,39 +27,5 @@ describe("Settings", () => {
     expect(settings.database.collection).to.deep.equal(collection)
   })
 
-  it("Use 'facebook'", () => {
-    // arrange
-    let options = {
-      appId: '456fd78df6789df789',
-      appSecret: 'faceschmook'
-    }
-    // pre-assert
-    expect(settings.providers.facebook.active).to.equal(false)
-    // act
-    mouser.use('facebook', options)
-    // assert
-    expect(settings.providers.facebook).to.not.equal(null)
-    expect(settings.providers.facebook.appId).to.equal(options.appId)
-    expect(settings.providers.facebook.appSecret).to.equal(options.appSecret)
-    expect(settings.providers.facebook.active).to.equal(true)
-  })
-
-  it("Use 'google'", () => {
-    // arrange
-    let options = {
-      appId: '456fd78df6789df789',
-      appSecret: 'schmoogle'
-    }
-    // pre-assert
-    expect(settings.providers.google.active).to.equal(false)
-    // act
-    mouser.use('google', options)
-    // assert
-    expect(settings.providers.google).to.not.equal(null)
-    expect(settings.providers.google.appId).to.equal(options.appId)
-    expect(settings.providers.google.appSecret).to.equal(options.appSecret)
-    expect(settings.providers.google.active).to.equal(true)
-  })
-
 
 })
