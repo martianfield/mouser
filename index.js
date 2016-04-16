@@ -35,6 +35,7 @@ o.removeRole = roles.removeRole
 
 // middleware
 o.protect = middleware.protect
+o.protectRoute = middleware.protectRoute
 
 // info
 o.info = () => {

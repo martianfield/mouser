@@ -5,7 +5,7 @@ const express = require('express')
 
 // the downloads route has all methods protected
 let downloads = express.Router()
-//downloads.use(mouser.protectRoute({}))
+downloads.use(mouser.protectRoute({}))
 downloads.get('/', (req, res) => {
   res.send("Downloads - GET")
 })
@@ -15,7 +15,7 @@ downloads.post('/', (req, res) => {
 
 // the user route allows any visitor to use the get method
 let users = express.Router()
-//users.use(mouser.protectRoute({allow:["get"]}))
+users.use(mouser.protectRoute({allow:["GET"]}))
 users.get('/', (req, res) => {
   res.send("Users - GET")
 })

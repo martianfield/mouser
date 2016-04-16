@@ -5,6 +5,7 @@ const _ = require('lodash')
 const client_session = require('client-sessions')
 const log = require(__dirname + '/log.js')
 const configure = require(__dirname + '/configure.js')
+const setthings = require('setthings')
 
 const options = {
   protectedPaths:[],
@@ -74,6 +75,22 @@ function requireLogin(req, res, next) {
   }
 }
 
+function protectRoute(options) {
+  setthings.merge(options, { allow: []})
+  return (req, res, next) => {
+    let method = req.method
+    if(options.allow.some( element => element.toUpperCase() === req.method)) {
+      next()
+    }
+    else {
+      res.send("YOU SHOULD NOT BE IN HERE")
+      // TODO check if user is logged in
+      // TODO check if user has the needed role
+      // next()
+    }
+  }
+}
+
 function initClientSession() {
   options.clientSession = client_session({
     cookieName: configure.configuration.session.cookieName,
@@ -89,5 +106,6 @@ function init() {
 
 module.exports.requireLogin = requireLogin
 module.exports.protect = protect
+module.exports.protectRoute = protectRoute
 module.exports.init = init
 module.exports.clientSession = () => { return options.clientSession }
