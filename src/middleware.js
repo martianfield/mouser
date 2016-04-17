@@ -13,6 +13,12 @@ const options = {
   clientSession: null
 }
 
+/*
+const Modes = Object.freeze({
+  "Inclusive": "inclusive",
+  "Exclusive": "exclusive"
+})
+*/
 
 function protect(paths, protectBasePath) {
   // clean up paths array
@@ -91,6 +97,43 @@ function protectRoute(options) {
   }
 }
 
+/**
+ * Creates a middleware that opens a route to a set of given method / user combinations
+ * @param an array of objects that describe method-role combinations
+ */
+function openRoute(options) {
+  let parsedOptions = parseOptions(options)
+}
+
+/**
+ *
+ * @param options
+ */
+function closeRoute(options) {
+  let parsedOptions = parseOptions(options)
+}
+
+function parseOptions(options) {
+  let parsed = {}
+  options.forEach(option => {
+    for(let propertyName in option) {
+      if(option.hasOwnProperty(propertyName)) {
+        let methods = propertyName.split(',').map(method => method.trim().toUpperCase())
+        let roles = option[propertyName].split(',').map(role => role.trim().toLowerCase())
+        methods.forEach(method => {
+          if(!parsed.hasOwnProperty(method)) {
+            parsed[method] = new Set()
+          }
+          roles.forEach(role => {
+            parsed[method].add(role)
+          })
+        })
+      }
+    }
+  })
+  return parsed
+}
+
 function initClientSession() {
   options.clientSession = client_session({
     cookieName: configure.configuration.session.cookieName,
@@ -107,5 +150,8 @@ function init() {
 module.exports.requireLogin = requireLogin
 module.exports.protect = protect
 module.exports.protectRoute = protectRoute
+module.exports.openRoute = openRoute
+module.exports.closeRoute = closeRoute
+module.exports.parseOptions = parseOptions
 module.exports.init = init
 module.exports.clientSession = () => { return options.clientSession }
