@@ -81,6 +81,7 @@ function requireLogin(req, res, next) {
   }
 }
 
+/*
 function protectRoute(options) {
   setthings.merge(options, { allow: []})
   return (req, res, next) => {
@@ -96,21 +97,33 @@ function protectRoute(options) {
     }
   }
 }
+*/
 
-/**
- * Creates a middleware that opens a route to a set of given method / user combinations
- * @param an array of objects that describe method-role combinations
- */
-function openRoute(options) {
-  let parsedOptions = parseOptions(options)
-}
-
-/**
- *
- * @param options
- */
-function closeRoute(options) {
-  let parsedOptions = parseOptions(options)
+function protectRoute(options) {
+  let checkAccess = makeCheckAccess(options)
+  return (req, res, next) => {
+    //let user = undefined
+    let roles = []
+    // did we get a user token in the request (i.e. is the user logged in?)
+    if (req[configure.configuration.session.cookieName] && req[configure.configuration.session.cookieName].user) {
+      let user_token = req[configure.configuration.session.cookieName].user
+      // verify the token
+      try {
+        var decoded = jwt.verify(user_token, configure.configuration.token.secret)
+        roles = decoded.user.roles
+      } catch(err) {
+        // verifying did throw an error, no valid user
+        roles = []
+      }
+    }
+    // check if the visitor has access
+    if(checkAccess(req.method, roles)) {
+      next()
+    }
+    else {
+      res.send("GET OUT!")
+    }
+  }
 }
 
 /**
@@ -145,26 +158,35 @@ function parseOptions(options) {
  */
 function makeCheckAccess(options) {
   let opts = parseOptions(options)
-  return (method, role) => {
+  return (method, roles) => {
+    let hasAccess = false
     method = method.toUpperCase()
-    role = (role + "").toLowerCase()
+    roles = roles.map(role => role.trim().toLowerCase())
     if(opts[method] === undefined) {
       // if nothing defined for given method we return false
-      return false
+      hasAccess = false
     }
     else {
-      // there is a role set available for the role in question
-      if(opts[method].has(role) || opts[method].has('*')) {
-        // if the role present or the role set contains the wildcard, the user has access
-        return true
+      // if any role is accepted we can return true
+      if(opts[method].has('*')) {
+        hasAccess = true
       }
       else {
-        return false
+        // check if one of the roles grants access
+        roles.forEach(role => {
+          if(opts[method].has(role)) {
+            hasAccess = true
+          }
+        })
       }
+
+      // return result
+      return hasAccess
     }
   }
 
 }
+
 
 function initClientSession() {
   options.clientSession = client_session({
@@ -182,8 +204,6 @@ function init() {
 module.exports.requireLogin = requireLogin
 module.exports.protect = protect
 module.exports.protectRoute = protectRoute
-module.exports.openRoute = openRoute
-module.exports.closeRoute = closeRoute
 module.exports.parseOptions = parseOptions
 module.exports.makeCheckAccess = makeCheckAccess
 module.exports.init = init
