@@ -113,6 +113,11 @@ function closeRoute(options) {
   let parsedOptions = parseOptions(options)
 }
 
+/**
+ * Parses route protection options.
+ * @param options
+ * @returns {{}}
+ */
 function parseOptions(options) {
   let parsed = {}
   options.forEach(option => {
@@ -134,6 +139,33 @@ function parseOptions(options) {
   return parsed
 }
 
+/**
+ * Creates a function that takes a HTTP Method and Role name and returns true if access is granted and false if not
+ * @param options
+ */
+function makeCheckAccess(options) {
+  let opts = parseOptions(options)
+  return (method, role) => {
+    method = method.toUpperCase()
+    role = (role + "").toLowerCase()
+    if(opts[method] === undefined) {
+      // if nothing defined for given method we return false
+      return false
+    }
+    else {
+      // there is a role set available for the role in question
+      if(opts[method].has(role) || opts[method].has('*')) {
+        // if the role present or the role set contains the wildcard, the user has access
+        return true
+      }
+      else {
+        return false
+      }
+    }
+  }
+
+}
+
 function initClientSession() {
   options.clientSession = client_session({
     cookieName: configure.configuration.session.cookieName,
@@ -153,5 +185,6 @@ module.exports.protectRoute = protectRoute
 module.exports.openRoute = openRoute
 module.exports.closeRoute = closeRoute
 module.exports.parseOptions = parseOptions
+module.exports.makeCheckAccess = makeCheckAccess
 module.exports.init = init
 module.exports.clientSession = () => { return options.clientSession }
