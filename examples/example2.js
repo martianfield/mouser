@@ -37,8 +37,8 @@ app.get('/', (req, res) => {
 
 // routes defined in separate file
 const routes = require(__dirname + '/example2_routes.js')
+app.use('/news', routes.news)
 app.use('/downloads', routes.downloads)
-app.use('/users', routes.users)
 
 // last resort (404)
 app.use(function(req, res) {
@@ -49,6 +49,15 @@ app.use(function(req, res) {
 // run server
 app.listen(port)
 console.log(`serving at http://localhost:${port}`)
+
+
+
+
+
+
+
+
+
 
 
 function configureMouser() {

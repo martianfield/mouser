@@ -30,8 +30,6 @@ const use = (target, value) => {
       middleware.init()
       // make express use client-session on the app level
       options.app.use(middleware.clientSession())
-      // make express use our login protecting middleware
-      options.app.use(middleware.requireLogin)
 
       // add login routers
       options.app.use(`/${configure.configuration.paths.login}`, routers.login)

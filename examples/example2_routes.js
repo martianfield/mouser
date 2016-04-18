@@ -3,26 +3,6 @@
 const mouser = require(__dirname + '/../index.js')
 const express = require('express')
 
-// the downloads route has all methods protected
-let downloads = express.Router()
-downloads.use(mouser.protectRoute({}))
-downloads.get('/', (req, res) => {
-  res.send("Downloads - GET")
-})
-downloads.post('/', (req, res) => {
-  res.send("Downloads - POST")
-})
-
-// the user route allows any visitor to use the get method
-let users = express.Router()
-users.use(mouser.protectRoute({allow:["GET"]}))
-users.get('/', (req, res) => {
-  res.send("Users - GET")
-})
-users.post('/', (req, res) => {
-  res.send("Users - POST")
-})
-
 // use options to tell mouser which method is open / closed to which role(s)
 // use '*' to indicate a wildcard (for both, method and role)
 let opts = [
@@ -31,14 +11,44 @@ let opts = [
 ]
 
 // create middleware that opens or closes routes
-let mw_1 = mouser.openRoute({ opts })
-let mw_2 = mouser.closeRoute({ opts })
+let mw = mouser.protect(opts)
 
-// then use that middleware on the route
-users.use(mw_1)
-downloads.use(mw_2)
+// then use this middleware
+let route = express.Router()
+route.use(mw)
+route.get('/', (req, res) => { res.send("Hello") })
+
+// Alright, here two actual examples
+
+// the news route - everybody can get news, only admins can post
+let news = express.Router()
+
+news.use(mouser.protect([
+  {"GET": "*"},
+  {"POST": "admin"}
+]))
+news.get('/', (req, res) => {
+  res.send("NEWS - GET")
+})
+news.post('/', (req, res) => {
+  res.send("NEWS - POST")
+})
+
+// the downloads route - only members and admins can view, only admins can post
+let downloads = express.Router()
+downloads.use(mouser.protect([
+  {"GET": "member, admin"},
+  {"POST": "admin"}
+]))
+
+downloads.get('/', (req, res) => {
+  res.send("DOWNLOADS - GET")
+})
+downloads.post('/', (req, res) => {
+  res.send("DOWNLOADS - POST")
+})
 
 
 // exports
+module.exports.news = news
 module.exports.downloads = downloads
-module.exports.users = users
